@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Is Ivy Online?</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: #f4f4f4;
+    }
+    #status {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Roblox Status Checker</h1>
+  <div id="status">Checking...</div>
+
+  <script>
+    const userId = 00000000;
+
+    async function checkStatus() {
+      const statusDiv = document.getElementById("status");
+      try {
+        const res = await fetch("https://presence.roblox.com/v1/presence/users", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userIds: [userId] })
+        });
+        const data = await res.json();
+        const presence = data.userPresences[0];
+        const isOnline = presence.userPresenceType !== 0;
+        statusDiv.textContent = "IsIvyOnline: " + (isOnline ? "true" : "false");
+      } catch (err) {
+        statusDiv.textContent = "Error checking status.";
+      }
+    }
+
+    checkStatus();
+  </script>
+</body>
+</html>
